@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import org.springframework.http.MediaType;
@@ -29,10 +30,31 @@ public class ProductController {
   }
 
   @GetMapping("/")
-  public String getProducts(Map<String, Object> model) {
-    model.put("products", productService.getAllProducts());
+  public String getProducts(
+      @RequestParam(value = "keyword", required = false) String keyword,
+      @RequestParam(value = "categoryId", required = false) Long categoryId,
+      Map<String, Object> model) {
+    List<Product> products;
+    if ((keyword == null || keyword.isEmpty()) && (categoryId == null)) {
+      products = productService.getAllProducts();
+    } else if (categoryId != null) {
+      products = productService.getProductsByCategoryAndKeyword(categoryId, keyword);
+    } else {
+      products = productService.getProductsByKeyword(keyword);
+    }
+    model.put("products", products);
     model.put("categories", categoryService.getAllCategories());
     return "product/products";
+  }
+
+  @GetMapping("/details/{id}")
+  public String getProductDetails(Map<String, Object> model, @PathVariable Long id) {
+    Product product = productService.getProductById(id);
+    if (product == null) {
+      return "redirect:/products/";
+    }
+    model.put("product", product);
+    return "product/productDetails";
   }
 
   @GetMapping("/add")

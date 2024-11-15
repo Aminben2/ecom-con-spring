@@ -25,6 +25,18 @@ public class ProductService {
         return productRepo.findById(id).orElse(null);
     }
 
+    public List<Product> getProductsByKeyword(String keyword) {
+        return productRepo.findByNameContainingOrDescriptionContaining(keyword, keyword);
+    }
+
+    public List<Product> getProductsByCategoryAndKeyword(Long categoryId, String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            return productRepo.findByCategoryId(categoryId);
+        } else {
+            return productRepo.findByCategoryIdAndNameContainingOrDescriptionContaining(categoryId, keyword, keyword);
+        }
+    }
+
     @Transactional
     public Product addProduct(Product product) {
         return productRepo.save(product);
