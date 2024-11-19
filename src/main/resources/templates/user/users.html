@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"><head>
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category Management</title>
+    <title>User Management</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -81,7 +82,7 @@
             margin: 5px 0;
         }
 
-        .form-container input, .form-container textarea {
+        .form-container input {
             padding: 8px;
             width: 100%;
             margin: 5px 0;
@@ -109,9 +110,8 @@
 <body>
 
 <header>
-    <h1>Category Management</h1>
+    <h1>User Management</h1>
 </header>
-
 
 <nav>
     <a href="/products/">Product Management</a>
@@ -127,48 +127,55 @@
 </nav>
 
 
-
 <div class="content">
-    <a href="/categories/add">Add a new Category</a>
-    <h2>Categories</h2>
+    <a href="/users/add">Add a new User</a>
+    <h2>Users</h2>
     <table>
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
             <th>Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="category : ${categories}">
-            <td th:text="${category.id}">1</td>
-            <td th:text="${category.name}">Category Name</td>
-            <td th:text="${category.description}">Category Description</td>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">1</td>
+            <td th:text="${user.firstName}">First Name</td>
+            <td th:text="${user.lastName}">Last Name</td>
+            <td th:text="${user.email}">Email</td>
             <td>
-                <a th:href="@{/categories/edit/{id}(id=${category.id})}">Edit</a> |
-                <a th:href="@{/categories/{id}(id=${category.id})}"
-                   th:onclick="return confirm('Are you sure you want to delete this category?')">Delete</a>
+                <a th:href="@{/users/edit/{id}(id=${user.id})}">Edit</a> |
+                <a th:href="@{/users/delete/{id}(id=${user.id})}"
+                   th:onclick="return confirm('Are you sure you want to delete this user?')">Delete</a>
             </td>
         </tr>
         </tbody>
     </table>
 
-    <div class="form-container" th:if="${category != null}">
-        <h2 th:text="${category.id == null ? 'Add Category' : 'Edit Category'}"></h2>
-        <form th:action="@{${category.id == null ? '/categories/save' : '/categories/update'}}" th:object="${category}"
+    <div class="form-container" th:if="${user != null}">
+        <h2 th:text="${user.id == null ? 'Add User' : 'Edit User'}"></h2>
+        <form th:action="@{${user.id == null ? '/users/save' : '/users/update'}}" th:object="${user}"
               method="post">
-            <label for="name">Name:</label>
-            <input type="text" id="name" th:field="*{name}" required>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" th:field="*{firstName}" required>
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" th:field="*{lastName}" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required>
+
+            <label for="password" th:if="${user.id == null}">Password:</label>
+            <input type="password" id="password" th:field="*{password}" th:if="${user.id == null}" required>
 
             <input type="hidden" th:field="*{id}">
 
-            <label for="description">Description:</label>
-            <textarea id="description" th:field="*{description}" required></textarea>
-
             <div class="buttons">
-                <button type="submit" th:text="${category.id == null ? 'Add' : 'Update'}"></button>
-                <button type="button" onclick="window.location.href='/products/'">Cancel</button>
+                <button type="submit" th:text="${user.id == null ? 'Add' : 'Update'}"></button>
+                <button type="button" onclick="window.location.href='/users/'">Cancel</button>
             </div>
         </form>
     </div>

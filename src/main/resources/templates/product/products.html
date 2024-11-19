@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Management</title>
@@ -151,10 +151,21 @@
     <h1>Product Management</h1>
 </header>
 
+
 <nav>
     <a href="/products/">Product Management</a>
     <a href="/categories/">Category Management</a>
+    <a href="/users/">User Management</a>
+    <sec:authorize access="isAnonymous()">
+        <a href="/auth/login">Login</a>
+        <a href="/auth/register">Register</a>
+    </sec:authorize>
+    <sec:authorize access="isAuthenticated()">
+        <a href="/logout">Logout</a>
+    </sec:authorize>
 </nav>
+
+
 
 <div class="content">
     <a href="/products/add">Add a new Product</a>
