@@ -153,16 +153,18 @@
 
 
 <nav>
-    <a href="/products/">Product Management</a>
-    <a href="/categories/">Category Management</a>
-    <a href="/users/">User Management</a>
-    <sec:authorize access="isAnonymous()">
-        <a href="/auth/login">Login</a>
-        <a href="/auth/register">Register</a>
-    </sec:authorize>
-    <sec:authorize access="isAuthenticated()">
-        <a href="/logout">Logout</a>
-    </sec:authorize>
+    <ul>
+        <li><a href="/products/">Product Management</a></li>
+        <li><a href="/categories/">Category Management</a></li>
+        <li><a href="/users/">User Management</a></li>
+        <li sec:authorize="isAnonymous()">
+            <a href="/auth/login">Login</a>
+            <a href="/auth/register">Register</a>
+        </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+            <a class="nav-link active" aria-current="page" th:href="@{/logout}">Logout</a>
+        </li>
+    </ul>
 </nav>
 
 
