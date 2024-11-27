@@ -35,10 +35,13 @@ public class SpringSecurity {
                 authorize
                     .requestMatchers("/auth/**")
                     .permitAll()
+                    .requestMatchers("/api/categories/**")
+                    .permitAll()
                     .requestMatchers("/")
                     .permitAll()
                     .requestMatchers("/users/**", "/products/**", "/categories/**")
-                    .hasRole("ADMIN"))
+                    .hasRole("ADMIN")
+        )
         .formLogin(
             form ->
                 form.loginPage("/auth/login")

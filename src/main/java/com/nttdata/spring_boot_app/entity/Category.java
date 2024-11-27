@@ -1,6 +1,7 @@
 package com.nttdata.spring_boot_app.entity;
 
 import jakarta.persistence.*;
+import net.minidev.json.annotate.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,55 +10,58 @@ import java.util.List;
 @Entity
 @Table(name = "category")
 public class Category implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String description;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)    private List<Product> products = new ArrayList<>();
-    public List<Product> getProducts() {
-        return products;
-    }
+  private String name;
+  private String description;
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
+  @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonIgnore
+  private List<Product> products = new ArrayList<>();
 
-    public Category(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
+  public Category(String name, String description) {
+    this.name = name;
+    this.description = description;
+  }
 
-    public Category() {
-    }
+  public Category() {}
 
-    public Long getId() {
-        return id;
-    }
+  public List<Product> getProducts() {
+    return products;
+  }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+  public void setProducts(List<Product> products) {
+    this.products = products;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public Long getId() {
+    return id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    @Override
-    public String toString() {
-        return name;
-    }
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  @Override
+  public String toString() {
+    return name;
+  }
 }
